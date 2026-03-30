@@ -1,0 +1,7 @@
+services:
+  windows-soc:
+    build: .
+    container_name: windows-soc-lab
+    hostname: NFC-WS-041
+    stdin_open: true
+    tty: true

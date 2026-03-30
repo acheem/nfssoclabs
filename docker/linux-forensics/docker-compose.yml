@@ -1,0 +1,7 @@
+services:
+  linux-forensics:
+    build: .
+    container_name: linux-forensics-lab
+    hostname: NFC-SRV-WEB1
+    stdin_open: true
+    tty: true

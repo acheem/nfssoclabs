@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String
+  passwordHash String
+  role         Role       @default(LEARNER)
+  companyId    String?
+  company      Company?   @relation(fields: [companyId], references: [id])
+  progress     Progress[]
+  sessions     Session[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([email])
+  @@index([companyId])
+}
+
+enum Role {
+  LEARNER
+  BUSINESS_USER
+  COMPANY_ADMIN
+  PLATFORM_ADMIN
+}
+
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  seats     Int      @default(10)
+  plan      Plan     @default(BUSINESS)
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Plan {
+  BUSINESS
+  ENTERPRISE
+}
+
+model Progress {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  labSlug   String   // e.g. "01-clipboard-theft"
+  scenario  String?  // e.g. "A", "B" for CTF scenarios
+  status    Status   @default(NOT_STARTED)
+  score     Int      @default(0)
+  flagsFound String[] @default([])
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([userId, labSlug, scenario])
+  @@index([userId])
+}
+
+enum Status {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique @default(cuid())
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+}

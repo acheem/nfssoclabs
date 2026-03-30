@@ -1,0 +1,9 @@
+services:
+  kali-appsec:
+    build: .
+    container_name: kali-appsec-lab
+    hostname: kali-lab
+    stdin_open: true
+    tty: true
+    ports:
+      - "5000:5000"

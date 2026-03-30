@@ -1,0 +1,28 @@
+services:
+  splunk:
+    image: splunk/splunk:9.2.1
+    container_name: splunk-lab
+    hostname: splunk-lab
+    ports:
+      - "8000:8000"
+      - "8089:8089"
+      - "8088:8088"
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_PASSWORD=AABVINLABS1!
+    volumes:
+      - splunk-var:/opt/splunk/var
+      - splunk-etc:/opt/splunk/etc
+      - ./sample-data:/tmp/sample-data:ro
+      - ./configs:/tmp/configs:ro
+      - ./scripts:/tmp/scripts:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 120s
+
+volumes:
+  splunk-var:
+  splunk-etc:
