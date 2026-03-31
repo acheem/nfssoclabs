@@ -1,0 +1,23 @@
+{
+  "title": "Windows SOC: Clipboard Banker Forensics",
+  "description": "Investigate a clipboard-stealing banker trojan on a Windows Finance workstation. Use PowerShell forensic tools to trace the attack chain, find persistence mechanisms, and capture the flag.",
+  "difficulty": "intermediate",
+  "time": "30",
+  "details": {
+    "steps": [
+      {
+        "title": "Start your investigation",
+        "text": "step1.md"
+      }
+    ],
+    "intro": {
+      "text": "intro.md"
+    },
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "backend": {
+    "imageid": "docker"
+  }
+}

@@ -159,6 +159,8 @@ export default async function LabPage({ params }: { params: Promise<{ slug: stri
               <StartLabButton
                 slug={lab.slug}
                 isLoggedIn={!!session}
+                killercodaUrl={lab.launcher.killercodaUrl}
+                playWithDockerCmd={lab.launcher.playWithDockerCmd}
                 localCommands={lab.launcher.localCommands}
               />
             )}

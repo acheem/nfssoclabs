@@ -1,5 +1,7 @@
 export interface LabLaunch {
   devcontainerPath: string;
+  killercodaUrl?: string;
+  playWithDockerCmd: string;
   localCommands: {
     start: string;
     connect: string;
@@ -97,6 +99,8 @@ export const LABS: Lab[] = [
     ctfScenario: 7,
     launcher: {
       devcontainerPath: "docker/windows-soc/.devcontainer/devcontainer.json",
+      killercodaUrl: "https://killercoda.com/nfcsoc/scenario/windows-soc",
+      playWithDockerCmd: "docker run -it --rm --hostname NFC-WS-041 ghcr.io/acheem/nfcsoc-labs/windows-soc:latest",
       localCommands: {
         start: "cd docker/windows-soc && docker-compose up -d",
         connect: "docker exec -it windows-soc-lab pwsh",
@@ -116,6 +120,8 @@ export const LABS: Lab[] = [
     ctfScenario: 8,
     launcher: {
       devcontainerPath: "docker/linux-forensics/.devcontainer/devcontainer.json",
+      killercodaUrl: "https://killercoda.com/nfcsoc/scenario/linux-forensics",
+      playWithDockerCmd: "docker run -it --rm --hostname NFC-SRV-WEB1 ghcr.io/acheem/nfcsoc-labs/linux-forensics:latest",
       localCommands: {
         start: "cd docker/linux-forensics && docker-compose up -d",
         connect: "docker exec -it linux-forensics-lab bash",
@@ -135,6 +141,8 @@ export const LABS: Lab[] = [
     ctfScenario: 9,
     launcher: {
       devcontainerPath: "docker/kali-appsec/.devcontainer/devcontainer.json",
+      killercodaUrl: "https://killercoda.com/nfcsoc/scenario/kali-appsec",
+      playWithDockerCmd: "docker run -it --rm -p 5000:5000 --hostname kali-lab ghcr.io/acheem/nfcsoc-labs/kali-appsec:latest",
       localCommands: {
         start: "cd docker/kali-appsec && docker-compose up -d",
         connect: "docker exec -it kali-appsec-lab bash",

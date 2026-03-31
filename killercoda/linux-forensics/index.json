@@ -1,0 +1,23 @@
+{
+  "title": "Linux Server Forensics: SSH Compromise",
+  "description": "Investigate a compromised Ubuntu production web server. Identify the SSH brute-force entry point, privilege escalation, malware dropper, web shell, and data exfiltration. Decode the hidden payload to capture the flag.",
+  "difficulty": "intermediate",
+  "time": "30",
+  "details": {
+    "steps": [
+      {
+        "title": "Start your investigation",
+        "text": "step1.md"
+      }
+    ],
+    "intro": {
+      "text": "intro.md"
+    },
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "backend": {
+    "imageid": "docker"
+  }
+}

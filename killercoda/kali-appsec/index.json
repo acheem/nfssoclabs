@@ -1,0 +1,23 @@
+{
+  "title": "Kali AppSec: Web Vulnerability Assessment",
+  "description": "Use Kali Linux tools to find and exploit three vulnerabilities in the NFC Internal Portal: SQL Injection, Path Traversal, and Command Injection. Three flags to capture.",
+  "difficulty": "advanced",
+  "time": "45",
+  "details": {
+    "steps": [
+      {
+        "title": "Start the lab",
+        "text": "step1.md"
+      }
+    ],
+    "intro": {
+      "text": "intro.md"
+    },
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "backend": {
+    "imageid": "docker"
+  }
+}
