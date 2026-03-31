@@ -1,0 +1,91 @@
+name: Build & Publish Lab Images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docker/windows-soc/**"
+      - "docker/linux-forensics/**"
+      - "docker/kali-appsec/**"
+      - ".github/workflows/publish-labs.yml"
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/nfcsoc-labs
+
+jobs:
+  build-windows-soc:
+    name: Windows SOC Lab
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/windows-soc
+          push: true
+          tags: |
+            ${{ env.IMAGE_PREFIX }}/windows-soc:latest
+            ${{ env.IMAGE_PREFIX }}/windows-soc:${{ github.sha }}
+
+  build-linux-forensics:
+    name: Linux Forensics Lab
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/linux-forensics
+          push: true
+          tags: |
+            ${{ env.IMAGE_PREFIX }}/linux-forensics:latest
+            ${{ env.IMAGE_PREFIX }}/linux-forensics:${{ github.sha }}
+
+  build-kali-appsec:
+    name: Kali AppSec Lab
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker/kali-appsec
+          push: true
+          tags: |
+            ${{ env.IMAGE_PREFIX }}/kali-appsec:latest
+            ${{ env.IMAGE_PREFIX }}/kali-appsec:${{ github.sha }}
