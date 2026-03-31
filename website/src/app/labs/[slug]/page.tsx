@@ -5,7 +5,7 @@ import { LABS } from "@/lib/labs";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { labContent } from "@/lib/labContent";
-import { LabLauncher } from "@/components/LabLauncher";
+import { StartLabButton } from "@/components/StartLabButton";
 import {
   ArrowLeft,
   Terminal,
@@ -156,9 +156,9 @@ export default async function LabPage({ params }: { params: Promise<{ slug: stri
           <div className="space-y-5">
             {/* Lab launcher */}
             {lab.launcher && (
-              <LabLauncher
+              <StartLabButton
                 slug={lab.slug}
-                devcontainerPath={lab.launcher.devcontainerPath}
+                isLoggedIn={!!session}
                 localCommands={lab.launcher.localCommands}
               />
             )}
