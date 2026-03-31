@@ -11,7 +11,8 @@ COPY lab/ /lab/
 RUN pip3 install -q flask flask-sqlalchemy --break-system-packages
 
 # Flags stored server-side — analyst must exploit app to read them
-RUN echo -n 'NFCSOC{sql_1nj3ct10n_4uth_byp4ss}' > /lab/flags/flag1.txt && \
+RUN mkdir -p /lab/flags && \
+    echo -n 'NFCSOC{sql_1nj3ct10n_4uth_byp4ss}' > /lab/flags/flag1.txt && \
     echo -n 'NFCSOC{p4th_tr4v3rs4l_f1l3_r34d}'  > /lab/flags/flag2.txt && \
     echo -n 'NFCSOC{c0mm4nd_1nj3ct10n_rc3}'      > /lab/flags/flag3.txt && \
     chmod 640 /lab/flags/*.txt
