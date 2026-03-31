@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { auth } from "@/lib/auth";
+import { LABS } from "@/lib/labs";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Terminal, Flag, ArrowRight, Target, Zap } from "lucide-react";
@@ -52,8 +53,8 @@ export default async function HomePage() {
           {[
             {
               icon: Terminal,
-              title: "6 Hands-on Labs",
-              desc: "Clipboard theft, FIN7 hunting, malicious OneNote, phishing IR, and more.",
+              title: `${LABS.length} Hands-on Labs`,
+              desc: "Clipboard theft, FIN7 hunting, Linux forensics, AppSec, and more.",
             },
             {
               icon: Flag,
