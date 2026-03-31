@@ -20,7 +20,7 @@ const config: Config = {
         },
         border: "var(--border)",
         accent: {
-          DEFAULT: "var(--accent)",
+          DEFAULT: "rgb(var(--accent-rgb) / <alpha-value>)",
           foreground: "var(--accent-foreground)",
           muted: "var(--accent-muted)",
         },
