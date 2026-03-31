@@ -1,0 +1,42 @@
+name: Sync Killercoda Scenarios
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "killercoda/**"
+      - ".github/workflows/sync-killercoda.yml"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: Push scenarios to public repo
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Push killercoda/ to nfcsoc-killercoda repo
+        env:
+          TOKEN: ${{ secrets.KILLERCODA_REPO_TOKEN }}
+          TARGET_REPO: acheem/nfcsoc-killercoda
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+          # Clone the public target repo
+          git clone https://x-access-token:${TOKEN}@github.com/${TARGET_REPO}.git target-repo
+
+          # Copy scenario files (flatten killercoda/ into root of target repo)
+          cp -r killercoda/. target-repo/
+
+          cd target-repo
+
+          # Commit and push if there are changes
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to sync."
+          else
+            git commit -m "Sync scenarios from nfssoclabs ($(date -u '+%Y-%m-%d %H:%M UTC'))"
+            git push
+            echo "Scenarios synced successfully."
+          fi
