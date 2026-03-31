@@ -57,12 +57,35 @@ export function StartLabButton({ slug, isLoggedIn, localCommands }: StartLabButt
     }
   }
 
-  function handleStart() {
+  async function handleStart() {
     if (!isLoggedIn) {
       window.location.href = `/login?redirect=/labs/${slug}`;
       return;
     }
-    setState("needs_github");
+
+    setState("creating");
+
+    // Try to launch directly — API will tell us if GitHub needs connecting first
+    const res = await fetch("/api/labs/launch", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug }),
+    });
+    const data = await res.json();
+
+    if (data.needsGitHub) {
+      setState("needs_github");
+      return;
+    }
+    if (data.url) {
+      setLabUrl(data.url);
+      setState("ready");
+      return;
+    }
+    if (data.error) {
+      setErrorMsg(data.error);
+      setState("error");
+    }
   }
 
   function handleGitHubConnect() {
