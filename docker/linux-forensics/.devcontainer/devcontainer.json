@@ -1,0 +1,15 @@
+{
+  "name": "NFCSOC — Linux Forensics Lab",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "linux-forensics",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "forwardPorts": []
+}

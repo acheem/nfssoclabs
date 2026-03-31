@@ -1,0 +1,21 @@
+{
+  "name": "NFCSOC — Kali AppSec Lab",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "kali-appsec",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "forwardPorts": [5000],
+  "portsAttributes": {
+    "5000": {
+      "label": "NFC Portal (target app)",
+      "onAutoForward": "openBrowser"
+    }
+  }
+}

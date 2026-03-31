@@ -1,3 +1,12 @@
+export interface LabLaunch {
+  devcontainerPath: string;
+  localCommands: {
+    start: string;
+    connect: string;
+    stop: string;
+  };
+}
+
 export interface Lab {
   slug: string;
   title: string;
@@ -8,6 +17,7 @@ export interface Lab {
   tools: string[];
   mitre: string[];
   ctfScenario?: number;
+  launcher?: LabLaunch;
 }
 
 export const LABS: Lab[] = [
@@ -85,6 +95,14 @@ export const LABS: Lab[] = [
     tools: ["PowerShell", "Windows Event Logs", "Sysmon"],
     mitre: ["T1115", "T1547.001", "T1053.005", "T1041"],
     ctfScenario: 7,
+    launcher: {
+      devcontainerPath: "docker/windows-soc/.devcontainer/devcontainer.json",
+      localCommands: {
+        start: "cd docker/windows-soc && docker-compose up -d",
+        connect: "docker exec -it windows-soc-lab pwsh",
+        stop: "docker-compose down -v",
+      },
+    },
   },
   {
     slug: "08-linux-forensics",
@@ -96,6 +114,14 @@ export const LABS: Lab[] = [
     tools: ["bash", "Linux logs", "strings", "find"],
     mitre: ["T1110.001", "T1078", "T1548.003", "T1053.003", "T1505.003", "T1041"],
     ctfScenario: 8,
+    launcher: {
+      devcontainerPath: "docker/linux-forensics/.devcontainer/devcontainer.json",
+      localCommands: {
+        start: "cd docker/linux-forensics && docker-compose up -d",
+        connect: "docker exec -it linux-forensics-lab bash",
+        stop: "docker-compose down -v",
+      },
+    },
   },
   {
     slug: "09-kali-appsec",
@@ -107,5 +133,13 @@ export const LABS: Lab[] = [
     tools: ["Kali Linux", "curl", "SQLmap", "Burp Suite"],
     mitre: ["T1190", "T1083", "T1059"],
     ctfScenario: 9,
+    launcher: {
+      devcontainerPath: "docker/kali-appsec/.devcontainer/devcontainer.json",
+      localCommands: {
+        start: "cd docker/kali-appsec && docker-compose up -d",
+        connect: "docker exec -it kali-appsec-lab bash",
+        stop: "docker-compose down -v",
+      },
+    },
   },
 ];

@@ -5,6 +5,7 @@ import { LABS } from "@/lib/labs";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { labContent } from "@/lib/labContent";
+import { LabLauncher } from "@/components/LabLauncher";
 import {
   ArrowLeft,
   Terminal,
@@ -153,6 +154,15 @@ export default async function LabPage({ params }: { params: Promise<{ slug: stri
 
           {/* Sidebar */}
           <div className="space-y-5">
+            {/* Lab launcher */}
+            {lab.launcher && (
+              <LabLauncher
+                slug={lab.slug}
+                devcontainerPath={lab.launcher.devcontainerPath}
+                localCommands={lab.launcher.localCommands}
+              />
+            )}
+
             {/* CTF link */}
             {lab.ctfScenario && (
               <div className="card rounded-xl bg-accent/5 border-accent/20">
