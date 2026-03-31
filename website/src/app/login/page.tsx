@@ -1,9 +1,14 @@
 import Link from "next/link";
 import { Shield } from "lucide-react";
+import { LoginForm } from "./LoginForm";
 
 export const metadata = { title: "Sign In" };
 
-export default function LoginPage() {
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams: { registered?: string };
+}) {
   return (
     <main className="min-h-screen grid-bg flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
@@ -16,44 +21,18 @@ export default function LoginPage() {
           <p className="text-sm text-muted-foreground mt-1">Sign in to your account</p>
         </div>
 
-        {/* Form */}
-        <form className="card space-y-4" action="/api/auth/login" method="POST">
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              className="input"
-              placeholder="you@example.com"
-              required
-              autoComplete="email"
-            />
-          </div>
+        {searchParams.registered && (
+          <p className="text-sm text-success bg-success/10 border border-success/20 rounded-lg px-3 py-2 mb-4 text-center">
+            Account created — sign in below.
+          </p>
+        )}
 
-          <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              className="input"
-              placeholder="••••••••"
-              required
-              autoComplete="current-password"
-            />
-          </div>
-
-          <button type="submit" className="btn-primary w-full justify-center mt-2">
-            Sign in
-          </button>
-        </form>
+        <LoginForm />
 
         <p className="text-center text-sm text-muted-foreground mt-6">
-          <Link href="/" className="hover:text-accent transition-colors">
-            ← Back to home
+          Don&apos;t have an account?{" "}
+          <Link href="/register" className="text-accent hover:underline">
+            Sign up
           </Link>
         </p>
       </div>
