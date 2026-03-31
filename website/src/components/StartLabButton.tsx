@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ExternalLink, ChevronDown, ChevronUp, Copy, Check, Zap, Github, Terminal } from "lucide-react";
+import { ExternalLink, ChevronDown, ChevronUp, Copy, Check, Zap, Github, Terminal, UserPlus } from "lucide-react";
 
 interface StartLabButtonProps {
   slug: string;
@@ -25,6 +25,7 @@ export function StartLabButton({
   const [showMore, setShowMore] = useState(false);
   const [showLocal, setShowLocal] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
+  const [killercodaStep, setKillercodaStep] = useState<"idle" | "register">("idle");
 
   function copy(text: string, key: string) {
     navigator.clipboard.writeText(text);
@@ -35,27 +36,68 @@ export function StartLabButton({
   return (
     <div className="space-y-3">
 
-      {/* Option 1 — Killercoda (primary, no account needed) */}
+      {/* Option 1 — Killercoda */}
       {killercodaUrl && (
         <div className="card rounded-xl bg-accent/5 border-accent/20 space-y-3">
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 text-accent" />
-            <span className="text-sm font-semibold text-foreground">Start Lab — no account needed</span>
+            <span className="text-sm font-semibold text-foreground">Run in Browser</span>
             <span className="badge-green text-xs ml-auto">Free</span>
           </div>
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            Opens a terminal directly in your browser. Nothing to install.
-            The environment is destroyed automatically when you close it.
-          </p>
-          <a
-            href={killercodaUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary w-full justify-center"
-          >
-            Open Lab in Browser
-            <ExternalLink className="w-4 h-4" />
-          </a>
+
+          {killercodaStep === "idle" && (
+            <>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Opens a terminal directly in your browser via Killercoda.
+                Nothing to install. Environment is destroyed when you close it.
+              </p>
+              <button
+                onClick={() => setKillercodaStep("register")}
+                className="btn-primary w-full justify-center"
+              >
+                Open Lab in Browser
+                <ExternalLink className="w-4 h-4" />
+              </button>
+            </>
+          )}
+
+          {killercodaStep === "register" && (
+            <>
+              <p className="text-sm font-medium text-foreground">
+                You need a free Killercoda account
+              </p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Killercoda provides the browser terminal for this lab.
+                It&apos;s free — takes 30 seconds to sign up.
+              </p>
+              <div className="space-y-2">
+                <a
+                  href="https://killercoda.com/users/register"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary w-full justify-center"
+                >
+                  <UserPlus className="w-4 h-4" />
+                  Create free Killercoda account
+                </a>
+                <a
+                  href={killercodaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-ghost w-full justify-center text-sm"
+                >
+                  I already have an account — Open Lab
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+              <button
+                onClick={() => setKillercodaStep("idle")}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                ← Back
+              </button>
+            </>
+          )}
         </div>
       )}
 
