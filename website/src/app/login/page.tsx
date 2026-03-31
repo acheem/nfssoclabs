@@ -4,11 +4,12 @@ import { LoginForm } from "./LoginForm";
 
 export const metadata = { title: "Sign In" };
 
-export default function LoginPage({
+export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { registered?: string };
+  searchParams: Promise<{ registered?: string }>;
 }) {
+  const { registered } = await searchParams;
   return (
     <main className="min-h-screen grid-bg flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
@@ -21,7 +22,7 @@ export default function LoginPage({
           <p className="text-sm text-muted-foreground mt-1">Sign in to your account</p>
         </div>
 
-        {searchParams.registered && (
+        {registered && (
           <p className="text-sm text-success bg-success/10 border border-success/20 rounded-lg px-3 py-2 mb-4 text-center">
             Account created — sign in below.
           </p>
