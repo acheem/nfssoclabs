@@ -17,8 +17,9 @@ export async function generateStaticParams() {
   return LABS.map((lab) => ({ slug: lab.slug }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const lab = LABS.find((l) => l.slug === params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const lab = LABS.find((l) => l.slug === slug);
   if (!lab) return { title: "Lab Not Found" };
   return { title: lab.title };
 }
@@ -29,12 +30,13 @@ const DIFFICULTY_BADGE: Record<string, string> = {
   advanced: "badge-amber",
 };
 
-export default async function LabPage({ params }: { params: { slug: string } }) {
-  const lab = LABS.find((l) => l.slug === params.slug);
+export default async function LabPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const lab = LABS.find((l) => l.slug === slug);
   if (!lab) notFound();
 
   const session = await auth();
-  const content = labContent[params.slug];
+  const content = labContent[slug];
 
   return (
     <>
@@ -201,7 +203,7 @@ export default async function LabPage({ params }: { params: { slug: string } }) 
             <div className="card rounded-xl">
               <h3 className="font-semibold text-foreground text-sm mb-3">Other Labs</h3>
               <div className="space-y-1">
-                {LABS.filter((l) => l.slug !== params.slug).map((l) => (
+                {LABS.filter((l) => l.slug !== slug).map((l) => (
                   <Link
                     key={l.slug}
                     href={`/labs/${l.slug}`}
