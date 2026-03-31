@@ -72,6 +72,17 @@ enum Status {
   COMPLETED
 }
 
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique @default(cuid())
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([token])
+}
+
 model Session {
   id        String   @id @default(cuid())
   userId    String

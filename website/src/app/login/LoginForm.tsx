@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -57,9 +58,14 @@ export function LoginForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">
-          Password
-        </label>
+        <div className="flex items-center justify-between mb-1.5">
+          <label className="block text-sm font-medium text-foreground">
+            Password
+          </label>
+          <Link href="/forgot-password" className="text-xs text-muted-foreground hover:text-accent transition-colors">
+            Forgot password?
+          </Link>
+        </div>
         <input
           type="password"
           name="password"

@@ -7,9 +7,9 @@ export const metadata = { title: "Sign In" };
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ registered?: string }>;
+  searchParams: Promise<{ registered?: string; reset?: string }>;
 }) {
-  const { registered } = await searchParams;
+  const { registered, reset } = await searchParams;
   return (
     <main className="min-h-screen grid-bg flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
@@ -25,6 +25,11 @@ export default async function LoginPage({
         {registered && (
           <p className="text-sm text-success bg-success/10 border border-success/20 rounded-lg px-3 py-2 mb-4 text-center">
             Account created — sign in below.
+          </p>
+        )}
+        {reset && (
+          <p className="text-sm text-success bg-success/10 border border-success/20 rounded-lg px-3 py-2 mb-4 text-center">
+            Password updated — sign in with your new password.
           </p>
         )}
 
