@@ -10,7 +10,7 @@ const PLANS = [
   {
     name: "Free",
     icon: Shield,
-    price: "£0",
+    price: "$0",
     period: "forever",
     description: "Get started with core labs and CTF challenges.",
     cta: "Get started",
@@ -27,7 +27,7 @@ const PLANS = [
   {
     name: "Pro",
     icon: Zap,
-    price: "£19",
+    price: "$9.99",
     period: "/ month",
     description: "Full platform access with progress tracking and certificates.",
     cta: "Start Pro",
@@ -45,7 +45,7 @@ const PLANS = [
   {
     name: "Business",
     icon: Building2,
-    price: "£99",
+    price: "$19.99",
     period: "/ month",
     description: "Team training with admin dashboard and usage analytics.",
     cta: "Contact sales",
