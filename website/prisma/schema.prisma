@@ -98,6 +98,19 @@ model PasswordResetToken {
   @@index([token])
 }
 
+model Coupon {
+  id            String    @id @default(cuid())
+  code          String    @unique
+  discountPct   Int       // 0–100 percent off
+  maxUses       Int?      // null = unlimited
+  usedCount     Int       @default(0)
+  expiresAt     DateTime?
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+
+  @@index([code])
+}
+
 model Session {
   id        String   @id @default(cuid())
   userId    String
